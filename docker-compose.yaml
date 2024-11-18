@@ -22,7 +22,7 @@ services:
     environment:
      - VALUES_SIZE=${VALUES_SIZE}
     working_dir: /app
-    restart: no
+    restart: "no"
     depends_on:
       db:
         condition: service_healthy
@@ -35,7 +35,7 @@ services:
       context: .
       dockerfile: Dockerfile-request-db.dockerfile
     env_file: "./.env"
-    restart: no
+    restart: "no"
     depends_on:
       db:
         condition: service_healthy

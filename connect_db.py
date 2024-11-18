@@ -47,7 +47,7 @@ if __name__ == "__main__":
                             id SERIAL PRIMARY KEY,
                             name VARCHAR(50) CHECK (LENGTH(name) BETWEEN 4 AND 11),
                             surname VARCHAR(255),
-                            city VARCHAR(255),
+                            state VARCHAR(255),
                             age INT CHECK (age > 0)
                           );
                        """
