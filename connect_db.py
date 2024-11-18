@@ -58,7 +58,7 @@ if __name__ == "__main__":
         for item in data:
             # Преобразование элемента в кортеж
             values = tuple(item)
-            insert_query = """INSERT INTO demo_db.test_table (name, surname, city, age)
+            insert_query = """INSERT INTO demo_db.test_table (name, surname, state, age)
                               VALUES (%s, %s, %s, %s);
                            """
             execute_query(conn, insert_query, values)
