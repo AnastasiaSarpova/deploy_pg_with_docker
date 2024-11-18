@@ -1,0 +1,67 @@
+name: my_db
+services:
+  db:
+    image: postgres:17.1
+    container_name: app_db
+    env_file: "./.env"
+    user: postgres
+    volumes:
+        - pg_data:/var/lib/postgresql/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+    networks:
+      - pg_net
+  
+  generate_values:
+    build: 
+      context: .
+      dockerfile: Dockerfile-generate-values.dockerfile
+    volumes: 
+      - data_gen:/app/data
+    environment:
+     - VALUES_SIZE=${VALUES_SIZE}
+    working_dir: /app
+    restart: no
+    depends_on:
+      db:
+        condition: service_healthy
+    command: ["python", script_generate.py]
+    networks:
+      - pg_net
+  
+  request_db:
+    build: 
+      context: .
+      dockerfile: Dockerfile-request-db.dockerfile
+    env_file: "./.env"
+    restart: no
+    depends_on:
+      db:
+        condition: service_healthy
+      generate_values:
+        condition: service_started
+    volumes:
+      - data_gen:/app/data
+    working_dir: /app
+    command: ["python", connect_db.py]
+    networks:
+      - pg_net
+
+  adminer:
+    image: adminer:4.8.1-standalone
+    restart: always
+    env_file: "./.env"
+    ports:
+      - 8080:8080 
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - pg_net
+volumes:
+  pg_data:
+  data_gen:
+networks:
+  pg_net:
+  
