@@ -29,15 +29,25 @@ Elizabeth|White|Nevada|33
    
    $ cd project_name
    
+3. Создайте новый файл с именем .env, скопировав содержимое из .env.example. Это можно сделать через терминал:
+```cp .env.example .env```  
+или вручную, создав пустой файл .env и вставив туда содержимое .env.example.  
+Откройте созданный файл .env в вашем любимом редакторе и замените все значения-заглушки на ваши данные при необходимости. 
+   Переменные из файла .env:
+   - POSTGRES_USER = postgres
+   - POSTGRES_PASSWORD = "Ваш пароль", по умолчанию: 1234qwe
+   - POSTGRES_DB = demo_db
+   - PGDATA = /var/lib/postgresql/data/pgdata
+   - VALUES_SIZE = 50 переменная, для изменения размера сгенерированной таблицы, значение по умолчанию — 50
 
-3. Запустите контейнеры с помощью Docker Compose с необходимой переменной POSTGRES_PASSWORD:
+
+4. Запустите контейнеры с помощью Docker Compose с необходимой переменной POSTGRES_PASSWORD:
    
-   $ POSTGRES_PASSWORD="ваш пароль" POSTGRES_DB = demo_db docker-compose up --build -d  
-   VALUES_SIZE - необязательная переменная, для изменения размера сгенерированной таблицы, значение по умолчанию — 50
+   ```$ docker-compose up --build -d ```  
 
 4. Доступ к веб-интерфейсу Adminer по адресу: http://localhost:8080. Используйте следующие учетные данные для подключения:
    - Движок	: PostgreSQL
    - Сервер: db
    - Имя пользователя: postgres
-   - Пароль: "ваш пароль"
+   - Пароль: POSTGRES_PASSWORD из файла .env
 
